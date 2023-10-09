@@ -1,13 +1,13 @@
 package com.example.premiere_application
 
-data class Personnes(
+data class Acteurs(
     val page: Int = 0,
-    val results: List<Personne> = listOf(),
+    val results: List<Acteur> = listOf(),
     val total_pages: Int = 0,
     val total_results: Int = 0
 )
 
-data class Personne(
+data class Acteur(
     val adult: Boolean = false,
     val gender: Int = 0,
     val id: Int = 0,

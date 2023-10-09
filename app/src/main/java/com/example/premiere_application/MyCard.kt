@@ -17,7 +17,7 @@ fun MyCard(
     route: String,
     chemin_img: String,
     titre: String,
-    date_sortie: String,
+    date: String?,
     navController: NavController
 ) {
     androidx.compose.material3.Card(
@@ -37,10 +37,7 @@ fun MyCard(
                 modifier = Modifier
                     .width(180.dp),
             )
-            Text(
-                text = date_sortie
-            )
-
+            Text(text = date?:"")
         }
     }
 }

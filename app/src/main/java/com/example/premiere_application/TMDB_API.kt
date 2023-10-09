@@ -13,6 +13,6 @@ interface TMDB_API {
     suspend fun dernieres_series(@Query("api_key") api_key: String): Series
 
     @GET("trending/person/week")
-    suspend fun dernieres_personnes(@Query("api_key") api_key: String): Personnes
+    suspend fun derniers_acteurs(@Query("api_key") api_key: String): Acteurs
 
 }

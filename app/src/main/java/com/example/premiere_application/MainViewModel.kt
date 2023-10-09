@@ -10,7 +10,7 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 class MainViewModel : ViewModel(){
     val films = MutableStateFlow<List<Film>>(listOf())
     val series = MutableStateFlow<List<Serie>>(listOf())
-    val personnes = MutableStateFlow<List<Personne>>(listOf())
+    val acteurs = MutableStateFlow<List<Acteur>>(listOf())
 
     val apikey = "d936676cee467fd5bde1950ab82959ee"
 
@@ -37,9 +37,9 @@ class MainViewModel : ViewModel(){
         }
     }
 
-    fun personnes_tendance(){
+    fun acteurs_tendance(){
         viewModelScope.launch {
-            personnes.value = service.dernieres_personnes(apikey).results
+            acteurs.value = service.derniers_acteurs(apikey).results
         }
     }
 

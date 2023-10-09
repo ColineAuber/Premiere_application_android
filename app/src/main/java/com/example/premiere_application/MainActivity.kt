@@ -4,11 +4,21 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material.BottomNavigation
+import androidx.compose.material.BottomNavigationItem
+import androidx.compose.material.Scaffold
+import androidx.compose.material.Text
 import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
 import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.premiere_application.ui.theme.Premiere_applicationTheme
 
@@ -29,64 +39,84 @@ class MainActivity : ComponentActivity() {
                 // A surface container using the 'background' color from the theme
 
                 val navController = rememberNavController()
-
-                // mettre le NavHost dans le Scaffold
-                NavHost(navController = navController, startDestination = "Profil") {
-                    composable("Profil") { Ecran(windowSizeClass, navController) }
-                    composable("FilmsComposant") {
-                        FilmComposant(
-                            classes = windowSizeClass,
-                            navController = navController,
-                            viewModel = viewModel
-                        )
-                    }
-                    /*...*/
-                }
-
-            }
-
-            val navController = rememberNavController()
-            Scaffold(
-                bottomBar = {
-                    BottomNavigation {
-                        val navBackStackEntry by navController.currentBackStackEntryAsState()
-                        val currentDestination = navBackStackEntry?.destination
-                        items.forEach { screen ->
+                Scaffold(
+                    bottomBar = {
+                        BottomNavigation {
+                            val navBackStackEntry by navController.currentBackStackEntryAsState()
+                            val currentDestination = navBackStackEntry?.destination
                             BottomNavigationItem(
-                                icon = { Icon(Icons.Filled.Favorite, contentDescription = null) },
-                                label = { Text(stringResource(screen.resourceId)) },
-                                selected = currentDestination?.hierarchy?.any { it.route == screen.route } == true,
+                                icon = {
+                                    Image(
+                                        painterResource(id = R.drawable.clap),
+                                        contentDescription = "logo films",
+                                    )
+                                },
+                                label = { Text("Films") },
+                                selected = false,
                                 onClick = {
-                                    navController.navigate(screen.route) {
-                                        // Pop up to the start destination of the graph to
-                                        // avoid building up a large stack of destinations
-                                        // on the back stack as users select items
-                                        popUpTo(navController.graph.findStartDestination().id) {
-                                            saveState = true
-                                        }
-                                        // Avoid multiple copies of the same destination when
-                                        // reselecting the same item
-                                        launchSingleTop = true
-                                        // Restore state when reselecting a previously selected item
-                                        restoreState = true
-                                    }
-                                }
-                            )
+                                    navController.navigate("FilmsComposant")
+                                })
+                            BottomNavigationItem(
+                                icon = {
+                                    Image(
+                                        painterResource(id = R.drawable.acteur),
+                                        contentDescription = "logo acteurs",
+                                    )
+                                },
+                                label = { Text("Acteurs") },
+                                selected = false,
+                                onClick = {
+                                    navController.navigate("ActeursComposant")
+                                })
+                            BottomNavigationItem(
+                                icon = {
+                                    Image(
+                                        painterResource(id = R.drawable.video),
+                                        contentDescription = "logo séries",
+                                    )
+                                },
+                                label = { Text("Séries") },
+                                selected = false,
+                                onClick = {
+                                    navController.navigate("SeriesComposant")
+                                })
+
                         }
                     }
+                ) { innerPadding ->
+                    NavHost(navController = navController, startDestination = "Profil", modifier=Modifier.padding(innerPadding)) {
+                        composable("Profil") { Ecran(windowSizeClass, navController) }
+                        composable("FilmsComposant") {
+                            FilmComposant(
+                                classes = windowSizeClass,
+                                navController = navController,
+                                viewModel = viewModel
+                            )
+                        }
+                        composable("SeriesComposant") {
+                            SeriesComposant(
+                                classes = windowSizeClass,
+                                navController = navController,
+                                viewModel = viewModel
+                            )
+                        }
+                        composable("ActeursComposant") {
+                            ActeurComposant(
+                                classes = windowSizeClass,
+                                navController = navController,
+                                viewModel = viewModel
+                            )
+                        }
+                        /*...*/
+                    }
                 }
-            )
-            {
-                    innerPadding ->
-                NavHost(
-                    navController,
-                    startDestination = Screen.Profile.route,
-                    Modifier.padding(innerPadding)
-                ) {
-                    composable(Screen.Profile.route) { Profile(navController) }
-                    composable(Screen.FriendsList.route) { FriendsList(navController) }
-                }
+
+                // mettre le NavHost dans le Scaffold
+
+
             }
+
+
 
         }
 

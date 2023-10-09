@@ -17,15 +17,15 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.runtime.LaunchedEffect
 
 @Composable
-fun FilmComposant(
+fun SeriesComposant(
     classes: WindowSizeClass,
     navController: NavController,
     viewModel: MainViewModel
 ) {
     val classeHauteur = classes.heightSizeClass
-    val films by viewModel.films.collectAsState()
+    val series by viewModel.series.collectAsState()
     LaunchedEffect(true) {
-        viewModel.films_tendance()
+        viewModel.series_tendance()
     }
 
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
@@ -35,35 +35,20 @@ fun FilmComposant(
                 .padding(bottom = 5.dp),
             columns = GridCells.Fixed(2)
         ) {
-            items(films) { film ->
-                CardFilm(film, navController)
+            items(series) { serie ->
+                CardSerie(serie, navController)
             }
         }
     }
 }
 
 @Composable
-fun CardFilm(film: Film, navController: NavController) {
+fun CardSerie(serie: Serie, navController: NavController) {
     MyCard(
-        route = "filmDetail/" + film.id,
-        chemin_img = film.poster_path,
-        titre = film.title,
-        date = film.release_date,
+        route = "seriesDetail/" + serie.id,
+        chemin_img = serie.poster_path,
+        titre = serie.name,
+        date = serie.first_air_date,
         navController = navController
     )
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
