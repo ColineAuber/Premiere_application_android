@@ -15,4 +15,13 @@ interface TMDB_API {
     @GET("trending/person/week")
     suspend fun derniers_acteurs(@Query("api_key") api_key: String): Acteurs
 
+    @GET("search/movie?")
+    suspend fun recherche_films(@Query("api_key") api_key: String, @Query("query") query:String): Films
+
+    @GET("search/tv?")
+    suspend fun recherche_series(@Query("api_key") api_key: String, @Query("query") query:String): Series
+
+    @GET("search/person?")
+    suspend fun recherche_acteurs(@Query("api_key") api_key: String, @Query("query") query:String): Acteurs
+
 }

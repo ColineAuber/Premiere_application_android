@@ -23,7 +23,7 @@ fun FilmComposant(
     viewModel: MainViewModel
 ) {
     val classeHauteur = classes.heightSizeClass
-    val films by viewModel.films.collectAsState()
+    val films by viewModel.filmsT.collectAsState()
     LaunchedEffect(true) {
         viewModel.films_tendance()
     }

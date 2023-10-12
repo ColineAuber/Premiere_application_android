@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -27,189 +28,145 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 
 @Composable
-    fun Ecran(classes: WindowSizeClass, navController: NavController) {
-        val classeHauteur = classes.heightSizeClass
-        when (classeHauteur) {
-            WindowHeightSizeClass.Medium -> {
-
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
+fun Ecran(classes: WindowSizeClass, navController: NavController) {
+    val classeHauteur = classes.heightSizeClass
+    when (classeHauteur) {
+        WindowHeightSizeClass.Medium -> {
+            Surface(
+                modifier = Modifier.fillMaxSize(),
+                color = MaterialTheme.colorScheme.background
+            ) {
+                Column(
+                    verticalArrangement = Arrangement.SpaceEvenly,
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    modifier = Modifier.fillMaxSize()
                 ) {
-                    Column(
-                        verticalArrangement = Arrangement.SpaceEvenly,
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        modifier = Modifier.fillMaxSize()
-                    ) {
+                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                        Image(
+                            painterResource(id = R.drawable.selfie),
+                            contentDescription = "Photo Coline",
+                            modifier = Modifier
+                                .size(300.dp)
+                                .padding(20.dp)
+                                .clip(CircleShape)
+                        )
+                        Text(
+                            text = "Coline Auber",
+                            style = MaterialTheme.typography.headlineLarge,
+                        )
+                        Text(
+                            text = "Etudiante à l'école d'ingénieur ISIS - INU Champollion",
+                            style = MaterialTheme.typography.bodyMedium,
+                            modifier = Modifier.padding(10.dp)
+                        )
+                    }
 
-                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                        Row() {
                             Image(
-                                painterResource(id = R.drawable.selfie),
-                                contentDescription = "Photo Coline",
+                                painterResource(id = R.drawable.email),
+                                contentDescription = "Icone mail",
                                 modifier = Modifier
-                                    .size(300.dp)
-                                    .padding(20.dp)
-                                    .clip(CircleShape)
+                                    .size(25.dp)
+                                    .padding(bottom = 5.dp, end = 5.dp)
                             )
 
                             Text(
-                                text = "Coline Auber",
-                                style = MaterialTheme.typography.headlineLarge,
-                            )
-
-                            Text(
-                                text = "Etudiante à l'école d'ingénieur ISIS - INU Champollion",
+                                text = "colineauber@yahoo.fr",
                                 style = MaterialTheme.typography.bodyMedium,
-                                modifier = Modifier.padding(10.dp)
                             )
                         }
-
-                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                            LazyVerticalGrid(
-                                columns = GridCells.Fixed(2),
-                                Modifier
-                                    .padding(top = 50.dp)
-                                    .width(400.dp)
-                            ) {
-                                item {
-                                    Box() {
-                                        Image(
-                                            painterResource(id = R.drawable.email),
-                                            contentDescription = "Icone mail",
-                                            modifier = Modifier
-                                                .size(25.dp)
-                                                .padding(bottom = 5.dp, end = 5.dp)
-                                                .align(Alignment.BottomEnd)
-                                        )
-                                    }
-                                }
-                                item {
-                                    Text(
-                                        text = "colineauber@yahoo.fr",
-                                        style = MaterialTheme.typography.bodyMedium,
-                                    )
-                                }
-                                item {
-                                    Box() {
-                                        Image(
-                                            painterResource(id = R.drawable.linkedin),
-                                            contentDescription = "Icone linkedin",
-                                            modifier = Modifier
-                                                .size(25.dp)
-                                                .align(Alignment.BottomEnd)
-                                                .padding(end = 5.dp)
-                                        )
-                                    }
-                                }
-                                item {
-                                    Text(
-                                        text = "https://www.linkedin.com/in/coline-auber-0a9286197/",
-                                        style = MaterialTheme.typography.bodyMedium,
-                                    )
-                                }
-                            }
+                        Row() {
+                            Image(
+                                painterResource(id = R.drawable.linkedin),
+                                contentDescription = "Icone linkedin",
+                                modifier = Modifier
+                                    .size(25.dp)
+                                    .padding(end = 5.dp)
+                            )
+                            Text(
+                                text = "https://www.linkedin.com/in/coline-auber-0a9286197/",
+                                style = MaterialTheme.typography.bodyMedium,
+                            )
                         }
-
-                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                            Button(onClick = { navController.navigate("FilmsComposant") }) {
-                                Text("Démarrer")
-                            }
+                    }
+                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                        Button(onClick = { navController.navigate("FilmsComposant") }) {
+                            Text("Démarrer")
                         }
-
                     }
                 }
-
-
-            }
-            WindowHeightSizeClass.Compact -> {
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
-                ) {
-                    Row(
-
-                        modifier = Modifier.fillMaxSize()
-                    ) {
-
-                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                            Image(
-                                painterResource(id = R.drawable.selfie),
-                                contentDescription = "Photo Coline",
-                                modifier = Modifier
-                                    .size(300.dp)
-                                    .padding(20.dp)
-                                    .clip(CircleShape)
-                            )
-
-                            Text(
-                                text = "Coline Auber",
-                                style = MaterialTheme.typography.headlineLarge,
-                            )
-
-                            Text(
-                                text = "Etudiante à l'école d'ingénieur ISIS - INU Champollion",
-                                style = MaterialTheme.typography.bodyMedium,
-                                modifier = Modifier.padding(10.dp)
-                            )
-                        }
-
-                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                            LazyVerticalGrid(
-                                columns = GridCells.Fixed(2),
-                                Modifier
-                                    .padding(top = 50.dp)
-                                    .width(400.dp)
-                            ) {
-                                item {
-                                    Box() {
-                                        Image(
-                                            painterResource(id = R.drawable.email),
-                                            contentDescription = "Icone mail",
-                                            modifier = Modifier
-                                                .size(25.dp)
-                                                .padding(bottom = 5.dp, end = 5.dp)
-                                                .align(Alignment.BottomEnd)
-                                        )
-                                    }
-                                }
-                                item {
-                                    Text(
-                                        text = "colineauber@yahoo.fr",
-                                        style = MaterialTheme.typography.bodyMedium,
-                                    )
-                                }
-                                item {
-                                    Box() {
-                                        Image(
-                                            painterResource(id = R.drawable.linkedin),
-                                            contentDescription = "Icone linkedin",
-                                            modifier = Modifier
-                                                .size(25.dp)
-                                                .align(Alignment.BottomEnd)
-                                                .padding(end = 5.dp)
-                                        )
-                                    }
-                                }
-                                item {
-                                    Text(
-                                        text = "https://www.linkedin.com/in/coline-auber-0a9286197/",
-                                        style = MaterialTheme.typography.bodyMedium,
-                                    )
-                                }
-                            }
-                        }
-
-                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                            Button(onClick = { navController.navigate("FilmsComposant") }) {
-                                Text("Démarrer")
-                            }
-                        }
-
-                    }
-                }
-
             }
         }
 
-
+        WindowHeightSizeClass.Compact -> {
+            Surface(
+                modifier = Modifier.fillMaxSize(),
+                color = MaterialTheme.colorScheme.background
+            ) {
+                Row(
+                    modifier = Modifier.fillMaxSize(),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Image(
+                                painterResource(id = R.drawable.selfie),
+                                contentDescription = "Photo Coline",
+                                modifier = Modifier
+                                    .size(200.dp)
+                                    .clip(CircleShape)
+                            )
+                            Column{
+                                Row{
+                                    Image(
+                                    painterResource(id = R.drawable.email),
+                                    contentDescription = "Icone mail",
+                                    modifier = Modifier
+                                        .size(30.dp)
+                                        .padding(bottom = 5.dp, end = 5.dp, start = 10.dp)
+                                )
+                                    Text(
+                                        text = "colineauber@yahoo.fr",
+                                        style = MaterialTheme.typography.bodyMedium,
+                                    )}
+                                Row() {
+                                    Image(
+                                        painterResource(id = R.drawable.linkedin),
+                                        contentDescription = "Icone linkedin",
+                                        modifier = Modifier
+                                            .size(30.dp)
+                                            .padding(end = 5.dp, start = 10.dp)
+                                    )
+                                    Text(
+                                        text = "https://www.linkedin.com/in/coline-auber-0a9286197/",
+                                        style = MaterialTheme.typography.bodyMedium,
+                                        modifier = Modifier.padding(bottom = 20.dp)
+                                    )
+                                }
+                            }
+                        }
+                        Row{
+                            Column {
+                                Text(
+                                    text = "Coline Auber",
+                                    style = MaterialTheme.typography.headlineSmall,
+                                )
+                                Text(
+                                    text = "Etudiante à l'école d'ingénieur ISIS",
+                                    style = MaterialTheme.typography.bodySmall,
+                                )
+                            }
+                            Button(onClick = { navController.navigate("FilmsComposant") }) {
+                                Text("Démarrer")
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
+}

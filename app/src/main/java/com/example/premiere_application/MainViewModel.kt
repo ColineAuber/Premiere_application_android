@@ -6,11 +6,15 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
+import retrofit2.http.Query
 
 class MainViewModel : ViewModel(){
-    val films = MutableStateFlow<List<Film>>(listOf())
+    val filmsT = MutableStateFlow<List<Film>>(listOf())
     val series = MutableStateFlow<List<Serie>>(listOf())
     val acteurs = MutableStateFlow<List<Acteur>>(listOf())
+    val filmsR = MutableStateFlow<List<Film>>(listOf())
+    val seriesR = MutableStateFlow<List<Serie>>(listOf())
+    val acteursR = MutableStateFlow<List<Acteur>>(listOf())
 
     val apikey = "d936676cee467fd5bde1950ab82959ee"
 
@@ -27,7 +31,7 @@ class MainViewModel : ViewModel(){
 
     fun films_tendance(){
         viewModelScope.launch {
-            films.value = service.derniers_films(apikey).results
+            filmsT.value = service.derniers_films(apikey).results
         }
     }
 
@@ -40,6 +44,24 @@ class MainViewModel : ViewModel(){
     fun acteurs_tendance(){
         viewModelScope.launch {
             acteurs.value = service.derniers_acteurs(apikey).results
+        }
+    }
+
+    fun films_recherche(query: String){
+        viewModelScope.launch {
+            filmsR.value = service.recherche_films(apikey, query).results
+         }
+    }
+
+    fun series_recherche(query: String){
+        viewModelScope.launch {
+            seriesR.value = service.recherche_series(apikey, query).results
+        }
+    }
+
+    fun acteurs_recherche(query: String){
+        viewModelScope.launch {
+            acteursR.value = service.recherche_acteurs(apikey, query).results
         }
     }
 
