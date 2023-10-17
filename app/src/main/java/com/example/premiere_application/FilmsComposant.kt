@@ -1,5 +1,7 @@
 package com.example.premiere_application
 
+import android.util.Log
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -23,7 +25,7 @@ fun FilmComposant(
     viewModel: MainViewModel
 ) {
     val classeHauteur = classes.heightSizeClass
-    val films by viewModel.filmsT.collectAsState()
+    val films by viewModel.films.collectAsState()
     LaunchedEffect(true) {
         viewModel.films_tendance()
     }
@@ -36,20 +38,24 @@ fun FilmComposant(
             columns = GridCells.Fixed(2)
         ) {
             items(films) { film ->
-                CardFilm(film, navController)
+                CardFilm(film, navController, modifier = Modifier.clickable {
+                   // Log.v("filmid", film.id.toString())
+                    navController.navigate("FilmDetail/"+ film.id)
+                 })
             }
         }
     }
 }
 
 @Composable
-fun CardFilm(film: Film, navController: NavController) {
+fun CardFilm(film: Film, navController: NavController, modifier: Modifier) {
     MyCard(
+        modifier = modifier,
         route = "filmDetail/" + film.id,
         chemin_img = film.poster_path,
         titre = film.title,
         date = film.release_date,
-        navController = navController
+        navController = navController,
     )
 }
 

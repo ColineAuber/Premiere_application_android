@@ -1,11 +1,14 @@
 package com.example.premiere_application
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -29,6 +32,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -64,91 +68,65 @@ class MainActivity : ComponentActivity() {
                 val navController = rememberNavController()
                 val navBackStackEntry by navController.currentBackStackEntryAsState()
                 val currentDestination = navBackStackEntry?.destination
+
+                var historyFilms = remember {
+                    mutableStateListOf("Big")
+                }
+                var historyActeurs = remember {
+                    mutableStateListOf("")
+                }
+                var historySeries = remember {
+                    mutableStateListOf("")
+                }
                 Scaffold(
                         topBar = {
-                            if(currentDestination?.route == "FilmsComposant") {
+                            if(currentDestination?.route != "Profil") {
                                 SearchBar(
                                     leadingIcon = {
                                         Icon(
                                             imageVector = Icons.Default.Search,
-                                            contentDescription = "icone loupe"
+                                            contentDescription = "icone search"
+                                        )
+                                    },
+                                    trailingIcon = {
+                                        Icon(
+                                            modifier = Modifier.clickable {
+                                                if(text.isNotEmpty()) {
+                                                    text = ""
+                                                }else{
+                                                    active = false
+                                                    /** Ca demande trop de ressources et ca crache
+                                                    if(currentDestination?.route == "FilmsComposant"){
+                                                        viewModel.films_tendance()
+                                                    } else if(currentDestination?.route == "SeriesComposant"){
+                                                        viewModel.series_tendance()
+                                                    } else if(currentDestination?.route == "ActeursComposant"){
+                                                        viewModel.acteurs_tendance()
+                                                    }
+                                                    */
+                                                }
+                                            },
+                                            imageVector = Icons.Default.Close,
+                                            contentDescription = "icone close"
                                         )
                                     },
                                     modifier = Modifier.fillMaxWidth(),
                                     query = text,
                                     onQueryChange = { text = it },
                                     onSearch = {
-                                        viewModel.films_recherche(it)
-                                     },
-                                    active = active,
-                                    onActiveChange = { active = it },
-                                    placeholder = {
-                                        Text(text = "Search")
-                                    }
-                                ) {
-                                    val films by viewModel.filmsR.collectAsState()
-
-                                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                                        LazyVerticalGrid(
-                                            modifier = Modifier
-                                                .fillMaxSize()
-                                                .padding(bottom = 5.dp),
-                                            columns = GridCells.Fixed(2)
-                                        ) {
-                                            items(films) { film ->
-                                                CardFilm(film, navController)
-                                            }
+                                        if (currentDestination?.route == "FilmsComposant") {
+                                            historyFilms.add(text)
+                                            viewModel.films_recherche(it)
+                                            active = false
+                                        } else if (currentDestination?.route == "ActeursComposant") {
+                                            viewModel.acteurs_recherche(it)
+                                            historyActeurs.add(text)
+                                            active = false
+                                        } else if (currentDestination?.route == "SeriesComposant") {
+                                            viewModel.series_recherche(it)
+                                            historySeries.add(text)
+                                            active = false
                                         }
-                                    }
-                                }
-                            }else if(currentDestination?.route == "ActeursComposant") {
-                                SearchBar(
-                                    leadingIcon = {
-                                        Icon(
-                                            imageVector = Icons.Default.Search,
-                                            contentDescription = "icone loupe"
-                                        )
-                                    },
-                                    modifier = Modifier.fillMaxWidth(),
-                                    query = text,
-                                    onQueryChange = { text = it },
-                                    onSearch = {
-                                        viewModel.acteurs_recherche(it)
-                                    },
-                                    active = active,
-                                    onActiveChange = { active = it },
-                                    placeholder = {
-                                        Text(text = "Search")
-                                    }
-                                ) {
-                                    val acteurs by viewModel.acteursR.collectAsState()
-
-                                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                                        LazyVerticalGrid(
-                                            modifier = Modifier
-                                                .fillMaxSize()
-                                                .padding(bottom = 5.dp),
-                                            columns = GridCells.Fixed(2)
-                                        ) {
-                                            items(acteurs) { acteur ->
-                                                CardActeur(acteur, navController)
-                                            }
-                                        }
-                                    }
-                                }
-                            }else if(currentDestination?.route == "SeriesComposant") {
-                                SearchBar(
-                                    leadingIcon = {
-                                        Icon(
-                                            imageVector = Icons.Default.Search,
-                                            contentDescription = "icone loupe"
-                                        )
-                                    },
-                                    modifier = Modifier.fillMaxWidth(),
-                                    query = text,
-                                    onQueryChange = { text = it },
-                                    onSearch = {
-                                        viewModel.series_recherche(it)
                                     },
                                     active = active,
                                     onActiveChange = { active = it },
@@ -156,32 +134,34 @@ class MainActivity : ComponentActivity() {
                                         Text(text = "Search")
                                     }
                                 ) {
-                                    val series by viewModel.seriesR.collectAsState()
-
-                                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                                        LazyVerticalGrid(
-                                            modifier = Modifier
-                                                .fillMaxSize()
-                                                .padding(bottom = 5.dp),
-                                            columns = GridCells.Fixed(2)
-                                        ) {
-                                            items(series) { serie ->
-                                                CardSerie(serie, navController)
+                                    historyFilms.forEach{
+                                        Row(modifier = Modifier.padding(all = 14.dp)){
+                                            Icon(
+                                                imageVector = Icons.Default.History,
+                                                contentDescription = "icone historique",
+                                                modifier = Modifier.padding(end = 10.dp)
+                                            )
+                                            Text(text = it /**, modifier = modifier = Modifier.clickable { text = it }*/)
                                             }
                                         }
                                     }
                                 }
-                            }
+
+
                         },
                         bottomBar = {
                             if(currentDestination?.route != "Profil") {
                             BottomNavigation {
 
                                 BottomNavigationItem(
-                                    icon = {
+                                    icon = {/**
                                         Image(
                                             painterResource(id = R.drawable.clap_bis),
                                             contentDescription = "logo films",
+                                        )*/
+                                        Icon(
+                                            imageVector = Icons.Default.Movie,
+                                            contentDescription = "icone search"
                                         )
                                     },
                                     label = { Text("Films") },
@@ -245,20 +225,20 @@ class MainActivity : ComponentActivity() {
                                 viewModel = viewModel
                             )
                         }
-                        /*...*/
+                        composable("FilmDetail/{filmId}") {
+                            val id =it.arguments?.getString("filmId")?:""
+                            FilmDetail(
+                                classes = windowSizeClass,
+                                navController = navController,
+                                viewModel = viewModel,
+                                id
+                            )
+                        }
                     }
                 }
-
-                // mettre le NavHost dans le Scaffold
-
-
             }
-
-
         }
-
     }
-
 }
 
 

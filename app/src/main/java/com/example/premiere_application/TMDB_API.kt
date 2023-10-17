@@ -1,6 +1,7 @@
 package com.example.premiere_application
 
 import retrofit2.http.GET
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 
@@ -23,5 +24,8 @@ interface TMDB_API {
 
     @GET("search/person?")
     suspend fun recherche_acteurs(@Query("api_key") api_key: String, @Query("query") query:String): Acteurs
+
+    @GET("movie/{filmId}")
+    suspend fun detail_film(@Path("filmId") filmId : String?, @Query("api_key") api_key: String): Film
 
 }

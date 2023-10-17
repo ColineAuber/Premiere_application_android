@@ -36,19 +36,20 @@ fun SeriesComposant(
             columns = GridCells.Fixed(2)
         ) {
             items(series) { serie ->
-                CardSerie(serie, navController)
+                CardSerie(serie, navController, modifier = Modifier)
             }
         }
     }
 }
 
 @Composable
-fun CardSerie(serie: Serie, navController: NavController) {
+fun CardSerie(serie: Serie, navController: NavController, modifier: Modifier) {
     MyCard(
         route = "seriesDetail/" + serie.id,
         chemin_img = serie.poster_path,
         titre = serie.name,
         date = serie.first_air_date,
-        navController = navController
+        navController = navController,
+        modifier = Modifier
     )
 }

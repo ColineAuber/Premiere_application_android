@@ -36,19 +36,20 @@ fun ActeurComposant(
             columns = GridCells.Fixed(2)
         ) {
             items(acteurs) { acteur ->
-                CardActeur(acteur, navController)
+                CardActeur(acteur, navController, modifier = Modifier)
             }
         }
     }
 }
 
 @Composable
-fun CardActeur(acteur: Acteur, navController: NavController) {
+fun CardActeur(acteur: Acteur, navController: NavController, modifier: Modifier) {
     MyCard(
         route = "acteurDetail/" + acteur.id,
         chemin_img = acteur.profile_path,
         titre = acteur.name,
         date = null,
-        navController = navController
+        navController = navController,
+        modifier = Modifier
     )
 }

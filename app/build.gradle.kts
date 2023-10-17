@@ -5,12 +5,12 @@ plugins {
 
 android {
     namespace = "com.example.premiere_application"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "com.example.premiere_application"
         minSdk = 24
-        targetSdk = 33
+        targetSdk = 34
         versionCode = 1
         versionName = "1.0"
 
@@ -75,4 +75,5 @@ dependencies {
     implementation("androidx.navigation:navigation-compose:2.5.3")
     implementation("io.coil-kt:coil-compose:2.4.0")
     implementation("androidx.compose.material:material:1.3.1")
+    implementation("androidx.compose.material:material-icons-extended-android:1.5.3")
 }
