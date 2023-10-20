@@ -18,6 +18,13 @@ class MainViewModel(savedStateHandle : SavedStateHandle) : ViewModel(){
         }
     }
 
+    val serie = MutableStateFlow(Serie())
+    fun serie_detail(id: String) {
+        viewModelScope.launch {
+            serie.value = service.detail_serie(id, apikey)
+        }
+    }
+
     val films = MutableStateFlow<List<Film>>(listOf())
     val series = MutableStateFlow<List<Serie>>(listOf())
     val acteurs = MutableStateFlow<List<Acteur>>(listOf())

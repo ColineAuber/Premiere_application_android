@@ -28,4 +28,7 @@ interface TMDB_API {
     @GET("movie/{filmId}")
     suspend fun detail_film(@Path("filmId") filmId : String?, @Query("api_key") api_key: String): Film
 
+    @GET("tv/{serieId}")
+    suspend fun detail_serie(@Path("serieId") filmId : String?, @Query("api_key") api_key: String): Serie
+
 }

@@ -1,11 +1,9 @@
 package com.example.premiere_application
 
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -18,16 +16,15 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.SavedStateHandle
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 
 @Composable
-fun FilmDetail(classes: WindowSizeClass, navController: NavController, viewModel : MainViewModel, id: String){
+fun SerieDetail(classes: WindowSizeClass, navController: NavController, viewModel : MainViewModel, id: String){
     val classeHauteur = classes.heightSizeClass
-    val film by viewModel.film.collectAsState()
+    val serie by viewModel.serie.collectAsState()
     LaunchedEffect(true) {
-        viewModel.film_detail(id)
+        viewModel.serie_detail(id)
     }
 
     when (classeHauteur) {
@@ -36,22 +33,20 @@ fun FilmDetail(classes: WindowSizeClass, navController: NavController, viewModel
                 modifier = Modifier.fillMaxSize(),
                 color = MaterialTheme.colorScheme.background
             ) {
-                Column() {
                     Row() {
                         Column(
                             horizontalAlignment = Alignment.CenterHorizontally,
                             modifier = Modifier.fillMaxSize()
                         ) {
                             Text(
-                                text = film.title,
+                                text = serie.name,
                                 style = MaterialTheme.typography.headlineLarge,
                                 modifier = Modifier
                                     .padding(10.dp)
                             )
-
                             AsyncImage(
-                                model = "https://image.tmdb.org/t/p/w500${film.poster_path}",
-                                contentDescription = film.title
+                                model = "https://image.tmdb.org/t/p/w500${serie.poster_path}",
+                                contentDescription = serie.name
                             )
                         }
                     }
@@ -69,7 +64,7 @@ fun FilmDetail(classes: WindowSizeClass, navController: NavController, viewModel
                                     style = MaterialTheme.typography.bodyMedium,
                                 )
                                 Text(
-                                    text = film.release_date,
+                                    text = serie.first_air_date,
                                     style = MaterialTheme.typography.bodyMedium,
                                 )
                             }
@@ -78,26 +73,16 @@ fun FilmDetail(classes: WindowSizeClass, navController: NavController, viewModel
                                     text = "Genre(s) : ",
                                     style = MaterialTheme.typography.bodyMedium,
                                 )
-                                film.genre_ids.forEach {
-                                    Text(
-                                        text = it.toString(),
-                                        style = MaterialTheme.typography.bodyMedium,
-                                    )
-                                }
                             }
                         }
                     }
                 }
             }
-        }
-
-
         WindowHeightSizeClass.Compact -> {
             Surface(
                 modifier = Modifier.fillMaxSize(),
                 color = MaterialTheme.colorScheme.background
             ) {
-
             }
         }
     }

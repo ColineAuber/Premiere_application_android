@@ -10,7 +10,12 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AlternateEmail
+import androidx.compose.material.icons.filled.Mail
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Button
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -116,31 +121,30 @@ fun Ecran(classes: WindowSizeClass, navController: NavController) {
                                     .size(200.dp)
                                     .clip(CircleShape)
                             )
+
                             Column{
                                 Row{
-                                    Image(
-                                    painterResource(id = R.drawable.email),
-                                    contentDescription = "Icone mail",
-                                    modifier = Modifier
-                                        .size(30.dp)
-                                        .padding(bottom = 5.dp, end = 5.dp, start = 10.dp)
-                                )
+                                    Icon(
+                                        imageVector = Icons.Default.Mail,
+                                        contentDescription = "icone mail",
+                                        modifier = Modifier.padding(start = 50.dp)
+                                    )
                                     Text(
                                         text = "colineauber@yahoo.fr",
                                         style = MaterialTheme.typography.bodyMedium,
+                                        modifier = Modifier
+                                            .padding(start = 5.dp, top=1.dp)
                                     )}
                                 Row() {
-                                    Image(
-                                        painterResource(id = R.drawable.linkedin),
-                                        contentDescription = "Icone linkedin",
-                                        modifier = Modifier
-                                            .size(30.dp)
-                                            .padding(end = 5.dp, start = 10.dp)
+                                    Icon(
+                                        imageVector = Icons.Default.AlternateEmail,
+                                        contentDescription = "icone linkedin",
+                                        modifier = Modifier.padding(start = 50.dp)
                                     )
                                     Text(
                                         text = "https://www.linkedin.com/in/coline-auber-0a9286197/",
                                         style = MaterialTheme.typography.bodyMedium,
-                                        modifier = Modifier.padding(bottom = 20.dp)
+                                        modifier = Modifier.padding(start = 5.dp, top=2.dp)
                                     )
                                 }
                             }
@@ -150,6 +154,7 @@ fun Ecran(classes: WindowSizeClass, navController: NavController) {
                                 Text(
                                     text = "Coline Auber",
                                     style = MaterialTheme.typography.headlineSmall,
+                                    modifier = Modifier.padding(end = 320.dp)
                                 )
                                 Text(
                                     text = "Etudiante à l'école d'ingénieur ISIS",

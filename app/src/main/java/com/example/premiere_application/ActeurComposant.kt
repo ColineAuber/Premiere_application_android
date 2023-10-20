@@ -14,6 +14,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.material.Surface
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.windowsizeclass.WindowHeightSizeClass
 import androidx.compose.runtime.LaunchedEffect
 
 @Composable
@@ -28,19 +31,47 @@ fun ActeurComposant(
         viewModel.acteurs_tendance()
     }
 
-    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-        LazyVerticalGrid(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(bottom = 5.dp),
-            columns = GridCells.Fixed(2)
-        ) {
-            items(acteurs) { acteur ->
-                CardActeur(acteur, navController, modifier = Modifier)
+    when (classeHauteur) {
+        WindowHeightSizeClass.Medium -> {
+            Surface(
+                modifier = Modifier.fillMaxSize(),
+                color = MaterialTheme.colorScheme.background
+            ) {
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    LazyVerticalGrid(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(bottom = 5.dp),
+                        columns = GridCells.Fixed(2)
+                    ) {
+                        items(acteurs) { acteur ->
+                            CardActeur(acteur, navController, modifier = Modifier)
+                        }
+                    }
+                }
+            }
+        }
+            WindowHeightSizeClass.Compact -> {
+                androidx.compose.material3.Surface(
+                    modifier = Modifier.fillMaxSize(),
+                    color = MaterialTheme.colorScheme.background
+                ) {
+                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                        LazyVerticalGrid(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .padding(bottom = 5.dp),
+                            columns = GridCells.Fixed(2)
+                        ) {
+                            items(acteurs) { acteur ->
+                                CardActeur(acteur, navController, modifier = Modifier)
+                            }
+                        }
+                    }
+                }
             }
         }
     }
-}
 
 @Composable
 fun CardActeur(acteur: Acteur, navController: NavController, modifier: Modifier) {

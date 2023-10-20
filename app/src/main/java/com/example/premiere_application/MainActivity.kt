@@ -80,7 +80,7 @@ class MainActivity : ComponentActivity() {
                 }
                 Scaffold(
                         topBar = {
-                            if(currentDestination?.route != "Profil") {
+                            if(currentDestination?.route != "Profil" && currentDestination?.route !="FilmDetail") {
                                 SearchBar(
                                     leadingIcon = {
                                         Icon(
@@ -150,7 +150,7 @@ class MainActivity : ComponentActivity() {
 
                         },
                         bottomBar = {
-                            if(currentDestination?.route != "Profil") {
+                            if(currentDestination?.route != "Profil" && currentDestination?.route !="FilmDetail") {
                             BottomNavigation {
 
                                 BottomNavigationItem(
@@ -228,6 +228,15 @@ class MainActivity : ComponentActivity() {
                         composable("FilmDetail/{filmId}") {
                             val id =it.arguments?.getString("filmId")?:""
                             FilmDetail(
+                                classes = windowSizeClass,
+                                navController = navController,
+                                viewModel = viewModel,
+                                id
+                            )
+                        }
+                        composable("SerieDetail/{serieId}") {
+                            val id =it.arguments?.getString("serieId")?:""
+                            SerieDetail(
                                 classes = windowSizeClass,
                                 navController = navController,
                                 viewModel = viewModel,

@@ -16,6 +16,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.material3.windowsizeclass.WindowHeightSizeClass
 import androidx.compose.runtime.LaunchedEffect
 
 @Composable
@@ -30,18 +33,49 @@ fun FilmComposant(
         viewModel.films_tendance()
     }
 
-    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-        LazyVerticalGrid(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(bottom = 5.dp),
-            columns = GridCells.Fixed(2)
-        ) {
-            items(films) { film ->
-                CardFilm(film, navController, modifier = Modifier.clickable {
-                   // Log.v("filmid", film.id.toString())
-                    navController.navigate("FilmDetail/"+ film.id)
-                 })
+    when (classeHauteur) {
+        WindowHeightSizeClass.Medium -> {
+            Surface(
+                modifier = Modifier.fillMaxSize(),
+                color = MaterialTheme.colorScheme.background
+            ) {
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    LazyVerticalGrid(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(bottom = 5.dp),
+                        columns = GridCells.Fixed(2)
+                    ) {
+                        items(films) { film ->
+                            CardFilm(film, navController, modifier = Modifier.clickable {
+                                // Log.v("filmid", film.id.toString())
+                                navController.navigate("FilmDetail/" + film.id)
+                            })
+                        }
+                    }
+                }
+            }
+        }
+
+        WindowHeightSizeClass.Compact -> {
+            Surface(
+                modifier = Modifier.fillMaxSize(),
+                color = MaterialTheme.colorScheme.background
+            ) {
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    LazyVerticalGrid(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(bottom = 5.dp),
+                        columns = GridCells.Fixed(3)
+                    ) {
+                        items(films) { film ->
+                            CardFilm(film, navController, modifier = Modifier.clickable {
+                                navController.navigate("FilmDetail/" + film.id)
+                            })
+                        }
+                    }
+                }
             }
         }
     }
