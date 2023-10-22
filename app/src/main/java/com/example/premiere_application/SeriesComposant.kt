@@ -65,7 +65,7 @@ fun SeriesComposant(
                         modifier = Modifier
                             .fillMaxSize()
                             .padding(bottom = 5.dp),
-                        columns = GridCells.Fixed(2)
+                        columns = GridCells.Fixed(3)
                     ) {
                         items(series) { serie ->
                             CardSerie(serie, navController, modifier = Modifier.clickable {

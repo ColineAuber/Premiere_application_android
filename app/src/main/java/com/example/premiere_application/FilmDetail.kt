@@ -6,6 +6,11 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -29,6 +34,10 @@ fun FilmDetail(classes: WindowSizeClass, navController: NavController, viewModel
     LaunchedEffect(true) {
         viewModel.film_detail(id)
     }
+    val distribution by viewModel.acteurs.collectAsState()
+    LaunchedEffect(true) {
+        viewModel.film_distribution(id)
+    }
 
     when (classeHauteur) {
         WindowHeightSizeClass.Medium -> {
@@ -36,7 +45,7 @@ fun FilmDetail(classes: WindowSizeClass, navController: NavController, viewModel
                 modifier = Modifier.fillMaxSize(),
                 color = MaterialTheme.colorScheme.background
             ) {
-                Column() {
+               // Column(Modifier.verticalScroll(rememberScrollState())) {
                     Row() {
                         Column(
                             horizontalAlignment = Alignment.CenterHorizontally,
@@ -87,10 +96,42 @@ fun FilmDetail(classes: WindowSizeClass, navController: NavController, viewModel
                             }
                         }
                     }
+                    Row() {
+                        Text(
+                            text = "Synopsis",
+                            style = MaterialTheme.typography.headlineSmall,
+                            modifier = Modifier
+                                .padding(10.dp)
+                        )
+                        Text(
+                            text = film.overview,
+                            style = MaterialTheme.typography.bodyMedium,
+                        )
+                    }
+                    Row() {
+                        Text(
+                            text = "Tête d'affiche",
+                            style = MaterialTheme.typography.headlineSmall,
+                            modifier = Modifier
+                                .padding(10.dp)
+                        )
+                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                            LazyVerticalGrid(
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .padding(bottom = 5.dp),
+                                columns = GridCells.Fixed(2)
+                            ) {
+                                items(distribution) { acteur ->
+                                    CardActeur(acteur, navController, modifier = Modifier)
+                                }
+                            }
+                        }
+                    }
                 }
             }
-        }
-
+       // }
+        //}
 
         WindowHeightSizeClass.Compact -> {
             Surface(

@@ -31,4 +31,7 @@ interface TMDB_API {
     @GET("tv/{serieId}")
     suspend fun detail_serie(@Path("serieId") filmId : String?, @Query("api_key") api_key: String): Serie
 
+    @GET("movie/{filmId}/credits?append_to_response=credits")
+    suspend fun distribution_film(@Path("filmId") filmId : String?, @Query("api_key") api_key: String): Acteurs
+
 }

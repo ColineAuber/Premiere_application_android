@@ -61,7 +61,7 @@ fun ActeurComposant(
                             modifier = Modifier
                                 .fillMaxSize()
                                 .padding(bottom = 5.dp),
-                            columns = GridCells.Fixed(2)
+                            columns = GridCells.Fixed(3)
                         ) {
                             items(acteurs) { acteur ->
                                 CardActeur(acteur, navController, modifier = Modifier)

@@ -78,4 +78,10 @@ class MainViewModel(savedStateHandle : SavedStateHandle) : ViewModel(){
         }
     }
 
+    fun film_distribution(id: String){
+        viewModelScope.launch {
+            acteurs.value = service.distribution_film(id, apikey).results
+        }
+    }
+
 }
