@@ -162,7 +162,7 @@ fun Ecran(classes: WindowSizeClass, navController: NavController) {
                                 )
                             }
                             Button(onClick = { navController.navigate("FilmsComposant") }) {
-                                Text("Démarrer")
+                                Text(text = "Démarrer")
                             }
                         }
                     }

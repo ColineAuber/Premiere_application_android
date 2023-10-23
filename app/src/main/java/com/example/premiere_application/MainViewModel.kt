@@ -29,6 +29,9 @@ class MainViewModel(savedStateHandle : SavedStateHandle) : ViewModel(){
     val series = MutableStateFlow<List<Serie>>(listOf())
     val acteurs = MutableStateFlow<List<Acteur>>(listOf())
 
+    val filmDetail = MutableStateFlow(FilmDetail())
+    val serieDetail = MutableStateFlow(SerieDetail())
+
     val apikey = "d936676cee467fd5bde1950ab82959ee"
 
     val service = Retrofit.Builder()
@@ -80,7 +83,13 @@ class MainViewModel(savedStateHandle : SavedStateHandle) : ViewModel(){
 
     fun film_distribution(id: String){
         viewModelScope.launch {
-            acteurs.value = service.distribution_film(id, apikey).results
+            filmDetail.value = service.distribution_film(id, apikey)
+        }
+    }
+
+    fun serie_distribution(id: String){
+        viewModelScope.launch {
+            serieDetail.value = service.distribution_serie(id, apikey)
         }
     }
 

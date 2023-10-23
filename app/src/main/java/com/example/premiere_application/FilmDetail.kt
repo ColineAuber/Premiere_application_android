@@ -1,5 +1,6 @@
 package com.example.premiere_application
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -7,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.rememberScrollState
@@ -30,13 +32,23 @@ import coil.compose.AsyncImage
 @Composable
 fun FilmDetail(classes: WindowSizeClass, navController: NavController, viewModel : MainViewModel, id: String){
     val classeHauteur = classes.heightSizeClass
-    val film by viewModel.film.collectAsState()
     LaunchedEffect(true) {
         viewModel.film_detail(id)
     }
-    val distribution by viewModel.acteurs.collectAsState()
+    val filmDetail by viewModel.filmDetail.collectAsState()
     LaunchedEffect(true) {
         viewModel.film_distribution(id)
+    }
+    @Composable
+    fun CardCast(cast: Cast, navController: NavController, modifier: Modifier) {
+        MyCard(
+            route = "acteurDetail/" + cast.id,
+            chemin_img = cast.profile_path,
+            titre = cast.name,
+            date = null,
+            navController = navController,
+            modifier = modifier
+        )
     }
 
     when (classeHauteur) {
@@ -45,101 +57,213 @@ fun FilmDetail(classes: WindowSizeClass, navController: NavController, viewModel
                 modifier = Modifier.fillMaxSize(),
                 color = MaterialTheme.colorScheme.background
             ) {
-               // Column(Modifier.verticalScroll(rememberScrollState())) {
-                    Row() {
-                        Column(
-                            horizontalAlignment = Alignment.CenterHorizontally,
-                            modifier = Modifier.fillMaxSize()
-                        ) {
-                            Text(
-                                text = film.title,
-                                style = MaterialTheme.typography.headlineLarge,
-                                modifier = Modifier
-                                    .padding(10.dp)
-                            )
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    LazyVerticalGrid(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(bottom = 5.dp),
+                        columns = GridCells.Fixed(2)
+                    ) {
+                        item(span = { GridItemSpan(maxLineSpan) }) {
+                            Column() {
+                                Row() {
+                                    Column(
+                                        horizontalAlignment = Alignment.CenterHorizontally,
+                                        modifier = Modifier.fillMaxSize()
+                                    ) {
+                                        Text(
+                                            text = filmDetail.title,
+                                            style = MaterialTheme.typography.headlineLarge,
+                                            modifier = Modifier
+                                                .padding(10.dp)
+                                        )
 
-                            AsyncImage(
-                                model = "https://image.tmdb.org/t/p/w500${film.poster_path}",
-                                contentDescription = film.title
-                            )
-                        }
-                    }
-                    Row() {
-                        Column() {
-                            Text(
-                                text = "Details",
-                                style = MaterialTheme.typography.headlineSmall,
-                                modifier = Modifier
-                                    .padding(10.dp)
-                            )
-                            Row {
-                                Text(
-                                    text = "Date : ",
-                                    style = MaterialTheme.typography.bodyMedium,
-                                )
-                                Text(
-                                    text = film.release_date,
-                                    style = MaterialTheme.typography.bodyMedium,
-                                )
-                            }
-                            Row {
-                                Text(
-                                    text = "Genre(s) : ",
-                                    style = MaterialTheme.typography.bodyMedium,
-                                )
-                                film.genre_ids.forEach {
+                                        AsyncImage(
+                                            model = "https://image.tmdb.org/t/p/w500${filmDetail.poster_path}",
+                                            contentDescription = filmDetail.title
+                                        )
+                                    }
+                                }
+                                Row() {
+                                    Column() {
+                                        Text(
+                                            text = "Details",
+                                            style = MaterialTheme.typography.headlineSmall,
+                                            modifier = Modifier
+                                                .padding(10.dp)
+                                        )
+                                        Row {
+                                            Text(
+                                                text = "Date : ",
+                                                style = MaterialTheme.typography.bodyMedium,
+                                                modifier = Modifier
+                                                    .padding(top =10.dp, start = 10.dp, bottom = 10.dp)
+                                            )
+                                            Text(
+                                                text = filmDetail.release_date,
+                                                style = MaterialTheme.typography.bodyMedium,
+                                                modifier = Modifier
+                                                    .padding(top =10.dp, start = 2.dp)
+                                            )
+                                        }
+                                        Row {
+                                            Text(
+                                                text = "Genre(s) : ",
+                                                style = MaterialTheme.typography.bodyMedium,
+                                                modifier = Modifier
+                                                    .padding(top =10.dp, start = 10.dp, bottom = 10.dp),
+                                            )
+                                                filmDetail.genres.forEach() {
+                                                    Text(
+                                                        text = it.name + " ",
+                                                        style = MaterialTheme.typography.bodyMedium,
+                                                        modifier = Modifier
+                                                            .padding(top =10.dp, start = 2.dp),
+                                                    )
+                                                }
+                                        }
+                                    }
+                                }
+                                Row() {
                                     Text(
-                                        text = it.toString(),
+                                        text = "Synopsis",
+                                        style = MaterialTheme.typography.headlineSmall,
+                                        modifier = Modifier
+                                            .padding(10.dp)
+                                    )
+                                }
+                                Row() {
+                                    Text(
+                                        text = filmDetail.overview,
                                         style = MaterialTheme.typography.bodyMedium,
+                                        modifier = Modifier
+                                            .padding(10.dp)
+                                    )
+                                }
+                                Row() {
+                                    Text(
+                                        text = "Têtes d'affiche",
+                                        style = MaterialTheme.typography.headlineSmall,
+                                        modifier = Modifier
+                                            .padding(10.dp)
                                     )
                                 }
                             }
                         }
-                    }
-                    Row() {
-                        Text(
-                            text = "Synopsis",
-                            style = MaterialTheme.typography.headlineSmall,
-                            modifier = Modifier
-                                .padding(10.dp)
-                        )
-                        Text(
-                            text = film.overview,
-                            style = MaterialTheme.typography.bodyMedium,
-                        )
-                    }
-                    Row() {
-                        Text(
-                            text = "Tête d'affiche",
-                            style = MaterialTheme.typography.headlineSmall,
-                            modifier = Modifier
-                                .padding(10.dp)
-                        )
-                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                            LazyVerticalGrid(
-                                modifier = Modifier
-                                    .fillMaxSize()
-                                    .padding(bottom = 5.dp),
-                                columns = GridCells.Fixed(2)
-                            ) {
-                                items(distribution) { acteur ->
-                                    CardActeur(acteur, navController, modifier = Modifier)
-                                }
-                            }
+                        items(filmDetail.credits.cast) { cast ->
+                            CardCast(cast, navController, modifier = Modifier)
                         }
                     }
                 }
             }
-       // }
-        //}
+        }
+
 
         WindowHeightSizeClass.Compact -> {
             Surface(
                 modifier = Modifier.fillMaxSize(),
                 color = MaterialTheme.colorScheme.background
             ) {
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    LazyVerticalGrid(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(bottom = 5.dp),
+                        columns = GridCells.Fixed(3)
+                    ) {
+                        item(span = { GridItemSpan(maxLineSpan) }) {
+                            Column() {
+                                Row() {
+                                    Column(
+                                        horizontalAlignment = Alignment.CenterHorizontally,
+                                        modifier = Modifier.fillMaxSize()
+                                    ) {
+                                        Text(
+                                            text = filmDetail.title,
+                                            style = MaterialTheme.typography.headlineLarge,
+                                            modifier = Modifier
+                                                .padding(10.dp)
+                                        )
 
+                                        AsyncImage(
+                                            model = "https://image.tmdb.org/t/p/w500${filmDetail.poster_path}",
+                                            contentDescription = filmDetail.title
+                                        )
+                                    }
+                                }
+                                Row() {
+                                    Column() {
+                                        Text(
+                                            text = "Details",
+                                            style = MaterialTheme.typography.headlineSmall,
+                                            modifier = Modifier
+                                                .padding(10.dp)
+                                        )
+                                        Row {
+                                            Text(
+                                                text = "Date : ",
+                                                style = MaterialTheme.typography.bodyMedium,
+                                                modifier = Modifier
+                                                    .padding(top =10.dp, start = 10.dp, bottom = 10.dp)
+                                            )
+                                            Text(
+                                                text = filmDetail.release_date,
+                                                style = MaterialTheme.typography.bodyMedium,
+                                                modifier = Modifier
+                                                    .padding(top =10.dp, start = 2.dp)
+                                            )
+                                        }
+                                        Row {
+                                            Text(
+                                                text = "Genre(s) : ",
+                                                style = MaterialTheme.typography.bodyMedium,
+                                                modifier = Modifier
+                                                    .padding(top =10.dp, start = 10.dp, bottom = 10.dp),
+                                            )
+                                            filmDetail.genres.forEach() {
+                                                Text(
+                                                    text = it.name + " ",
+                                                    style = MaterialTheme.typography.bodyMedium,
+                                                    modifier = Modifier
+                                                        .padding(top =10.dp, start = 2.dp),
+                                                )
+                                            }
+                                        }
+                                    }
+                                }
+                                Row() {
+                                    Text(
+                                        text = "Synopsis",
+                                        style = MaterialTheme.typography.headlineSmall,
+                                        modifier = Modifier
+                                            .padding(10.dp)
+                                    )
+                                }
+                                Row() {
+                                    Text(
+                                        text = filmDetail.overview,
+                                        style = MaterialTheme.typography.bodyMedium,
+                                        modifier = Modifier
+                                            .padding(10.dp)
+                                    )
+                                }
+                                Row() {
+                                    Text(
+                                        text = "Têtes d'affiche",
+                                        style = MaterialTheme.typography.headlineSmall,
+                                        modifier = Modifier
+                                            .padding(10.dp)
+                                    )
+                                }
+                            }
+                        }
+                        items(filmDetail.credits.cast) { cast ->
+                            CardCast(cast, navController, modifier = Modifier)
+                        }
+                    }
+                }
             }
         }
     }
 }
+
